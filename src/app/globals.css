@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ১. গ্লোবাল কালার প্যালেট, টাইপোগ্রাফি এবং ভেরিয়েবল সিস্টেম (Tailwind v4 নিয়ম) */
+@theme {
+  /* Premium Luxury Dark Palette */
+  --color-bg-base: #050505;       /* Pitch Black */
+  --color-bg-surface: #0f0f11;    /* Deep Charcoal */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  
+  /* Cyber Neon Accent Palette */
+  --color-neon-cyan: #00f2fe;     /* Bright Cyber Cyan */
+  --color-neon-purple: #4facfe;   /* Electric Blue-Purple */
+  --color-text-mute: #94a3b8;     /* Slate Muted Text */
+
+  /* অ্যানিমেশন স্পিড ভেরিয়েবল */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ২. বেস স্টাইল এবং রিসেট */
+@layer base {
+  body {
+    background-color: var(--color-bg-base);
+    color: #ffffff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* কাস্টম গ্লোবাল স্ক্রোলবার (মিনিমাল লুক) */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-neon-cyan);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ৩. প্রিমিয়াম ইউআই সিস্টেম ও রিইউজেবল কম্পোনেন্ট ক্লাসেস */
+@layer components {
+  /* কন্টেইনার স্পেসিং সিস্টেম */
+  .layout-container {
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .layout-container {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+
+  /* গ্লাস মরফিজম কার্ড ডিজাইন সিস্টেম */
+  .glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border-subtle);
+    transition: var(--transition-smooth);
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 242, 254, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  }
+
+  /* প্রিমিয়াম বাটন সিস্টেম */
+  .btn-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 9999px;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-neon-cyan), var(--color-neon-purple));
+    color: #000000;
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    border: 1px solid var(--color-border-subtle);
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  /* স্পেশাল সাইবার গ্লো বাটন */
+  .btn-glow {
+    background: transparent;
+    color: var(--color-neon-cyan);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-glow:hover {
+    background: rgba(0, 242, 254, 0.05);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    border-color: var(--color-neon-cyan);
+    transform: translateY(-2px);
+  }
+}
+
+/* ৪. Lenis Smooth Scroll কোর রিকোয়ার্ড স্টাইল */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: auto;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: #00f2fe; }
 }
